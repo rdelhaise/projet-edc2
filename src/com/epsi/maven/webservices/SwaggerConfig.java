@@ -2,10 +2,12 @@ package com.epsi.maven.webservices;
 
 
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.google.common.base.Predicates;
+
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -24,5 +26,8 @@ public class SwaggerConfig {
 				.apis(RequestHandlerSelectors.any())
 				.paths(Predicates.not(PathSelectors.regex("/error.*")))
 				.build();
+		
 	}
+	
+
 }
