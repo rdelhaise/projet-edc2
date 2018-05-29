@@ -1,4 +1,4 @@
-package com.epsi.maven.webservices;
+package com.epsi.maven.webservices.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,22 +16,29 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
+
 @Api(value="greeting", description="Operations that permit to greet")
 @RestController
 @RequestMapping("/library/")
-public class WebServices {
-	@ApiOperation(value = "Find book woth ISBN")
+public class Rest {
+	GetData data = new GetData();
+	/*
+	 * Appel de l'API par le client lourd
+	 * Récupération des livres par Auteur 
+	 * 
+	 */
+	
+	@ApiOperation(value = "Find books with Author")
 	@ApiResponses(value ={
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 400, message = "Bad request"),
 			@ApiResponse(code = 502, message = "Bad gateway")
 	})
-    @RequestMapping(path = "/findByAuthor/{author}", method = RequestMethod.GET)
-    String findByAuthor(@PathVariable String author) throws IOException {    
+    @RequestMapping(path = "/author/{author}", method = RequestMethod.GET)
+	String author(@PathVariable String author) throws IOException {
 		
-		GetData data = new GetData(); 
+		return data.getData("author", author);
 		
-		
-        return data.getData("author", author);
     }
+	
 }

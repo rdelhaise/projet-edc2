@@ -1,4 +1,4 @@
-package com.epsi.maven.webservices;
+package com.epsi.maven.webservices.action;
 
 
 
