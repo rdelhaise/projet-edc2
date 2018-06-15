@@ -6,21 +6,16 @@ import com.epsi.maven.webservices.DAO.AppelApiGoogle;
 
 public class GetData {
 		public String getData(String researchType, String data) throws IOException {
-			String response = "" ; 
-			AppelApiGoogle appelApi = new AppelApiGoogle();
-			if(researchType == "author"){
-				
-				response = appelApi.getByAuthor(data);
-				
-			}else if(researchType == "isbn") {
-				
-				response = appelApi.getByIsbn(data);
-				
-			}else {
-				
-				response = appelApi.getByTitle(data);
+			final AppelApiGoogle appelApi = new AppelApiGoogle();
+			if ("author".equals(researchType)) {
 
+				return appelApi.getByAuthor(data);
+			
+			} else if (researchType == "isbn") {
+			
+				return appelApi.getByIsbn(data);
 			}
-			return response;
+
+			return appelApi.getByTitle(data);
 		}
 }
