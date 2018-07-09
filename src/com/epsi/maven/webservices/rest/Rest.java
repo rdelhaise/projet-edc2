@@ -1,44 +1,49 @@
 package com.epsi.maven.webservices.rest;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Scanner;
 
-import org.springframework.web.bind.annotation.PathVariable;
+import javax.validation.Valid;
+
+import org.json.JSONException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.epsi.maven.webservices.action.GetData;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiResponse;
-import com.wordnik.swagger.annotations.ApiResponses;
+import com.epsi.maven.webservices.dao.ApiGoogle;
+import com.epsi.maven.webservices.dao.BookData;
+import com.epsi.maven.webservices.json.SearchJson;
 
-@Api(value="greeting", description="Operations that permit to greet")
 @RestController
-@RequestMapping("/library/")
+@RequestMapping("/book")
 public class Rest {
-	GetData data = new GetData();
-	/*
-	 * Appel de l'API par le client lourd
-	 * Récupération des livres par Auteur 
-	 * 
-	 */
+	@Autowired
+	private BookData dataBook;
+	@Autowired
+	private ApiGoogle googleUrl;
+	// Create the Post Webservices
+	@RequestMapping(path = "/search", method = RequestMethod.POST)
+	public ResponseEntity<Object> searchBook(@RequestBody @Valid final SearchJson jsonRequest) throws IOException {
+		// If no json return bad request (400)
+		try {
+			if (dataBook.requestBookData(googleUrl.getGoogleResponse(jsonRequest.getTerm(), jsonRequest.getIsbn())) == null ){
+				return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body(null);
+
+			}else {
+				try {
+					return ResponseEntity.ok( dataBook.requestBookData( googleUrl.getGoogleResponse( jsonRequest.getTerm(), jsonRequest.getIsbn() ) ) );
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
 	
-	@ApiOperation(value = "Find books with Author")
-	@ApiResponses(value ={
-			@ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 400, message = "Bad request"),
-			@ApiResponse(code = 502, message = "Bad gateway")
-	})
-    @RequestMapping(path = "/author/{author}", method = RequestMethod.GET)
-	String author(@PathVariable String author) throws IOException {
-		
-		return data.getData("author", author);
-		
-    }
 	
 }
