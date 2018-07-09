@@ -25,7 +25,7 @@ public class Rest {
 	@Autowired
 	private ApiGoogle googleUrl;
 	// Create the Post Webservices
-	@RequestMapping(path = "/search", method = RequestMethod.POST)
+	@RequestMapping(path = "/search", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	public ResponseEntity<Object> searchBook(@RequestBody @Valid final SearchJson jsonRequest) throws IOException {
 		// If no json return bad request (400)
 		try {
