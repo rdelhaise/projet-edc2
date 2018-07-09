@@ -25,24 +25,20 @@ public class Rest {
 	@Autowired
 	private ApiGoogle googleUrl;
 	// Create the Post Webservices
-	@RequestMapping(path = "/search", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-	public ResponseEntity<Object> searchBook(@RequestBody @Valid final SearchJson jsonRequest) throws IOException {
+	@RequestMapping(path = "/search", method = RequestMethod.POST, headers = "Content-Type : application/json" , produces = "application/json;charset=utf-8")
+	public ResponseEntity<Object> searchBook(@RequestBody @Valid final SearchJson jsonRequest) throws IOException, JSONException {
 		// If no json return bad request (400)
-		try {
-			if (dataBook.requestBookData(googleUrl.getGoogleResponse(jsonRequest.getTerm(), jsonRequest.getIsbn())) == null ){
-				return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body(null);
+		
+		if (dataBook.requestBookData(googleUrl.getGoogleResponse(jsonRequest.getTerm(), jsonRequest.getIsbn())) == null ){
+			return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body(null);
 
-			}else {
-				try {
-					return ResponseEntity.ok( dataBook.requestBookData( googleUrl.getGoogleResponse( jsonRequest.getTerm(), jsonRequest.getIsbn() ) ) );
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
+		}else {
+			
+				return ResponseEntity.ok( dataBook.requestBookData( googleUrl.getGoogleResponse( jsonRequest.getTerm(), jsonRequest.getIsbn() ) ) );
+			
 		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
+		
 	}
 	
 	
