@@ -3,7 +3,7 @@
   
   <groupId>com.epsi.book.webservices</groupId>
   <version>0.0.1-SNAPSHOT</version>
-  
+  <artifactId>Projet</artifactId>
   <name>Book Webservices</name>
   <description>Webservices</description>
   <packaging>jar</packaging>
@@ -13,9 +13,10 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+</parent>
 
 	<properties>
+		<start-class>com.epsi.maven.webservices.MainApp</start-class>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
@@ -69,6 +70,5 @@
 		</plugins>
 	</build>
 	
-  <artifactId>book.webservices</artifactId>
 
 </project>
