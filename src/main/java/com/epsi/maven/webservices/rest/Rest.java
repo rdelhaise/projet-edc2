@@ -7,10 +7,11 @@ import javax.validation.Valid;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.epsi.maven.webservices.dao.ApiGoogle;
@@ -25,10 +26,9 @@ public class Rest {
 	@Autowired
 	private ApiGoogle googleUrl;
 	// Create the Post Webservices
-	@RequestMapping(path = "/search", method = RequestMethod.POST, headers = "Content-Type : application/json" , produces = "application/json;charset=utf-8")
+	@PostMapping(path = "/search", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Object> searchBook(@RequestBody @Valid final SearchJson jsonRequest) throws IOException, JSONException {
 		// If no json return bad request (400)
-		
 		if (dataBook.requestBookData(googleUrl.getGoogleResponse(jsonRequest.getTerm(), jsonRequest.getIsbn())) == null ){
 			return ResponseEntity.status( HttpStatus.BAD_REQUEST ).body(null);
 
@@ -37,9 +37,5 @@ public class Rest {
 				return ResponseEntity.ok( dataBook.requestBookData( googleUrl.getGoogleResponse( jsonRequest.getTerm(), jsonRequest.getIsbn() ) ) );
 			
 		}
-
-		
 	}
-	
-	
 }
